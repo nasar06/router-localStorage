@@ -1,25 +1,45 @@
-import logo from './logo.svg';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
+import About from './components/about/About';
+import AddedPlayer from './components/addedPlayer/AddedPlayer';
+import Home from './components/home/Home';
+import Main from './layout/Main';
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Main></Main>,
+      children: [
+        {
+          path: '/',
+          loader: () => fetch('wushu.json'),
+          element: <Home></Home>
+        },
+        {
+          path: '/home',
+          loader: () => fetch('wushu.json'),
+          element: <Home></Home>,
+        },
+        {
+          path:  'addedPlayer',
+          element: <AddedPlayer></AddedPlayer>
+        }
+      ]
+    },
+    {
+      path: 'about',
+      element: <About></About>
+    }
+  ])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }
 
 export default App;
+
+
+
